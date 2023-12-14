@@ -9,7 +9,7 @@ def moving_average():
     files_to_get = os.listdir(path_to_get)
     
     for file in files_to_get:
-        df = pd.read_csv(file)
+        df = pd.read_csv(os.path.join(path_to_get, file))
         df_cleaned = pd.DataFrame()
         window_size = ws
         for x in range(len(df)):
