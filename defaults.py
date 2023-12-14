@@ -1,0 +1,3 @@
+SHAPE = "pyramid"
+STEP_SIZE = 5
+MOVING_AVERAGE = 3

@@ -1,0 +1,3 @@
+.venv_mac/
+.venv_win/
+__pycache__/
