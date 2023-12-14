@@ -1,5 +1,4 @@
 import pandas as pd
-from defaults import MOVING_AVERAGE as ws
 import os
 
 #Moving Average
@@ -11,7 +10,7 @@ def moving_average():
     for file in files_to_get:
         df = pd.read_csv(os.path.join(path_to_get, file))
         df_cleaned = pd.DataFrame()
-        window_size = ws
+        window_size = 5
         for x in range(len(df)):
             time_series = df.iloc[x, :-1]
             moving_average_time_series = round(time_series.rolling(window = window_size).mean())
