@@ -7,5 +7,5 @@ def pull_log_from_mprem():
     files = os.listdir(path)
     for file in files:
         if file.endswith(".csv"):
-            shutil.copy(os.path.join(path,file), path_to_push)
+            shutil.move(os.path.join(path,file), path_to_push)
     
