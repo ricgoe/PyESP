@@ -28,6 +28,8 @@ def main(iterations, shape, step_size):
     for i in range(iterations):
         log(shape, step_size)
         print(f"At {i+1} iterations")
-        time.sleep(4.5)
+        time.sleep(1)
+        my_stepper.step(3)
+        time.sleep(1)
         
-main(15, "stern", 1)
+main(15, "pyramid", 1)
