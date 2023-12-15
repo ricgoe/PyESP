@@ -15,7 +15,7 @@ def log(shape, step_size):
     print(f"Shape: {shape}, Step size: {step_size}")
     try:
         _make_log(step_size, shape)
-    except Exception as e:
+    except Exception:
         pass
     with open(f"{shape}_step_{step_size}.csv", "a") as f:
         for _ in range(int(fr/step_size)):
@@ -29,7 +29,7 @@ def main(iterations, shape, step_size):
         log(shape, step_size)
         print(f"At {i+1} iterations")
         time.sleep(1)
-        my_stepper.step(3)
+        my_stepper.step(5)
         time.sleep(1)
         
-main(15, "pyramid", 1)
+main(50, "triangle", 2)
