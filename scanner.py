@@ -1,11 +1,20 @@
 from sensor import Sensor
 from stepper import Stepper
+from umqtt.simple import MQTTClient
 import time
 
 my_sensor = Sensor(trigger_pin=12, echo_pin=25)
 my_stepper = Stepper(19, 18, 5, 17)
 fr = Stepper.FULL_ROTATION
 
+
+
+SERVER = '192.168.178.148'
+CLIENT_ID = 'ESP_32_Dist'
+TOPIC = b'dist_object'
+
+client = MQTTClient(CLIENT_ID, SERVER)
+client.connect()
 
 def _make_log(step_size:int, shape):
     with open(f"{shape}_step_{step_size}.csv", "x") as f:
@@ -21,6 +30,8 @@ def log(shape, step_size):
         for _ in range(int(fr/step_size)):
             my_stepper.step(step_size)
             dist = my_sensor.distance_mm()
+            msg = (f'{dist}')
+            client.publish(TOPIC, msg)
             f.write(f"{dist},")
         f.write(shape+"\n")
     
