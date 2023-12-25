@@ -27,8 +27,8 @@ def dv_kalman(z):
         Q = np.matrix([[0.00001]])
         R = np.matrix([[2.92*(10**-3)]])
         
-        x = np.matrix([[0.]])      # initial distance estimate
-        P = np.matrix([[1000.]])
+        x = np.matrix([[9.5]])      # initial distance estimate
+        P = np.matrix([[10.]])
 
     # Kalman filter algorithm
     xp = A * x
@@ -52,11 +52,11 @@ firstRun = None  # Setze firstRun auf None, um die Initialisierung zu erzwingen
 
 
 root = os.getcwd()
-log_path = os.path.join(root, 'Logs')
+#log_path = os.path.join(root, 'Logs')
 #log_path = os.path.join(root, 'Study')
-file = os.path.join(log_path, f'{input("Shape: ")}_step_{input("Step size: ")}.csv')
+#file = os.path.join(log_path, f'{input("Shape: ")}_step_{input("Step size: ")}.csv')
 #file = os.path.join(log_path, f'Run_{input("Run: ")}_step_1.csv')
-df_data = pd.read_csv(file)
+df_data = pd.read_csv('data_bereinigt.csv')
 
 num_measurements = len(df_data.columns)-1
 measurements = np.zeros(num_measurements)
@@ -65,7 +65,7 @@ kalman_outputs = np.zeros(num_measurements)
 
 
 for i in range(len(df_data.columns)-1):
-    measurement = df_data.iloc[20,i]
+    measurement = df_data.iloc[0,i]
     result = dv_kalman(measurement)[0]
     measurements[i] = measurement
     kalman_outputs[i] = result
