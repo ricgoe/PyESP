@@ -15,6 +15,8 @@ should_stop_listening = False # Debug
 my_sensor = Sensor(trigger_pin=12, echo_pin=33)
 my_stepper = Stepper(19, 18, 5, 17)
 
+FULL_ROTATION = int(4075.7728395061727 / 8)
+
 # Callback function to handle messages
 def on_message(topic, msg):
     global should_stop_listening
@@ -22,9 +24,11 @@ def on_message(topic, msg):
     my_dick = json.loads(msg)
     
     if my_dick["password"] == "jimmy4":
-        data = ",".join([f"{i+1}" for i in range(int(360/my_dick["angle"]))]) + ",shape\n"
+        #data = ",".join([f"{i+1}" for i in range(int(360/my_dick["angle"]))]) + ",shape\n"
+        data = ",".join([f"{i+1}" for i in range(int(FULL_ROTATION/my_dick["angle"]))]) + ",shape\n"
         for _ in range(my_dick["runs"]):
-            for i in range(int(360/my_dick["angle"])):
+            #for i in range(int(360/my_dick["angle"])):
+            for i in range(int(FULL_ROTATION/my_dick["angle"])):
                 my_stepper.angle(my_dick["angle"])
                 utime.sleep(0.02)
                 dist = my_sensor.distance_mm()
