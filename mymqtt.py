@@ -24,13 +24,13 @@ def on_message(topic, msg):
     my_dick = json.loads(msg)
     
     if my_dick["password"] == "jimmy4":
-        #data = ",".join([f"{i+1}" for i in range(int(360/my_dick["angle"]))]) + ",shape\n"
-        data = ",".join([f"{i+1}" for i in range(int(FULL_ROTATION/my_dick["angle"]))]) + ",shape\n"
+        iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
+        factor = my_dick["angle"] if my_dick["mode"] == "angle" else int(FULL_ROTATION/360)
+        data = ",".join([f"{(i)*factor}" for i in range(iterations)]) + ",shape\n"
         for _ in range(my_dick["runs"]):
-            #for i in range(int(360/my_dick["angle"])):
-            for i in range(int(FULL_ROTATION/my_dick["angle"])):
+            for i in range(iterations):
                 my_stepper.angle(my_dick["angle"])
-                utime.sleep(0.02)
+                utime.sleep(0.5)
                 dist = my_sensor.distance_mm()
                 utime.sleep(0.005)
                 data += str(dist) + ','

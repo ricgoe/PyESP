@@ -15,15 +15,13 @@ with open("continue", "r") as f:
     should_stop_listening = f.read() == "0"
 should_stop_listening = False # Debug
 # my_sensor = Sensor(trigger_pin=12, echo_pin=33)
+
 scl_pin = Pin(22, Pin.OUT)  # SCL pin
 sda_pin = Pin(21, Pin.OUT)  # SDA pin
 i2c = I2C(1, scl=scl_pin, sda=sda_pin)
 vl_driver = VL53L0X.VL53L0X(i2c)
-
 vl_driver.init(power2v8=False)
-vl_driver.set_Vcsel_pulse_period(vl_driver.vcsel_period_type[0], 12)
 
-vl_driver.set_Vcsel_pulse_period(vl_driver.vcsel_period_type[1], 8)
 my_stepper = Stepper(19, 18, 5, 17)
 
 FULL_ROTATION = int(4075.7728395061727 / 8)
@@ -35,22 +33,29 @@ def on_message(topic, msg):
     my_dick = json.loads(msg)
     
     if my_dick["password"] == "jimmy4":
+        vl_driver.set_Vcsel_pulse_period(vl_driver.vcsel_period_type[0], 12)
+        vl_driver.set_Vcsel_pulse_period(vl_driver.vcsel_period_type[1], 8)
         iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
         factor = my_dick["angle"] if my_dick["mode"] == "angle" else int(FULL_ROTATION/360)
-        data = ",".join([f"{(i+1)*factor}" for i in range(iterations)]) + ",shape\n"
+        data = ",".join([f"{(i)*factor}" for i in range(iterations)]) + ",shape\n"
         for _ in range(my_dick["runs"]):
+            
             vl_driver.start()
+            vl_driver.read()-36
             vl_driver.stop()
+            
             for i in range(iterations):
-                my_stepper.angle(my_dick["angle"])
-                utime.sleep(0.02)
+                
                 vl_driver.start()
                 dist=vl_driver.read()-36
-                # print(vl_driver.read()-40) #DEBUG
                 vl_driver.stop()
+                # print(vl_driver.read()-40) #DEBUG
+                utime.sleep(0.02)
+                my_stepper.angle(my_dick["angle"])
                 utime.sleep(0.005)
                 data += str(dist) + ','
-                utime.sleep(0.005)
+                utime.sleep(1)
+            
             data += my_dick["shape"]+'\n'
             utime.sleep(1)
     
@@ -58,7 +63,7 @@ def on_message(topic, msg):
         should_stop_listening = True
         with open("continue", "w") as f:
             f.write("0")
-    
+
     client = MQTTClient("ESP32DATA", SERVER, PORT)
     try:
         client.connect()
