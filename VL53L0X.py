@@ -482,7 +482,7 @@ class VL53L0X:
                 self._register(FINAL_RANGE_CONFIG_VALID_PHASE_HIGH, 0x10)
                 self._register(FINAL_RANGE_CONFIG_VALID_PHASE_LOW, 0x08)
                 self._register(GLOBAL_CONFIG_VCSEL_WIDTH, 0x02)
-                self._(ALGO_PHASECAL_CONFIG_TIMEOUT, 0x0C)
+                self._register(ALGO_PHASECAL_CONFIG_TIMEOUT, 0x0C)
                 self._register(0xFF, 0x01)
                 self._register(ALGO_PHASECAL_LIM, 0x30)
                 self._register(0xFF, 0x00)
@@ -636,11 +636,10 @@ class VL53L0X:
         return True
 
     def perform_single_ref_calibration(self, vhv_init_byte):
-        chrono = Timer.Chrono()
         self._register(SYSRANGE_START, 0x01|vhv_init_byte)
-        chrono.start()
+        start_time = utime.ticks_ms()
         while self._register((RESULT_INTERRUPT_STATUS & 0x07) == 0):
-            time_elapsed = chrono.read_ms()
+            time_elapsed = utime.ticks_diff(utime.ticks_ms(), start_time)
             if time_elapsed > _IO_TIMEOUT:
                 return False
         self._register(SYSTEM_INTERRUPT_CLEAR, 0x01)
