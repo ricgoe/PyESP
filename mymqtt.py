@@ -39,7 +39,7 @@ def on_message(topic, msg):
             data += str(dist) + ','
             utime.sleep(0.005)
         data += my_dick["shape"] + ','+ str(my_dick["position"]) + ',' + str(my_dick["sensor_rotation"]) + ',' + str(my_dick["angle"]) + '\n'
-        my_stepper.angle(int(360/FULL_ROTATION)) if my_dick['shape'] != 'cylinder' else None
+        my_stepper.angle(45) if my_dick['shape'] != 'cylinder' else None
         utime.sleep(1)
     
     if my_dick["stop"]:
