@@ -59,7 +59,7 @@ def on_message(client: mqtt.Client, userdata, msg):
     client.disconnect()
 
 if __name__ == '__main__':
-    sender(password="jimmy4", angle=5, stop=False, runs=1, shape="triangle", mode = "angle")
+    sender(password="jimmy4", angle=5.625, stop=True, runs=1, shape="triangle", mode = "angle")
     listener()
     
     

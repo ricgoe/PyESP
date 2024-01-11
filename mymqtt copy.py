@@ -24,7 +24,7 @@ vl_driver.init(power2v8=False)
 
 my_stepper = Stepper(19, 18, 5, 17)
 
-FULL_ROTATION = int(4075.7728395061727 / 8)
+FULL_ROTATION = Stepper.FULL_ROTATION
 
 # Callback function to handle messages
 def on_message(topic, msg):

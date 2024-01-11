@@ -15,7 +15,8 @@ should_stop_listening = False # Debug
 my_sensor = Sensor(trigger_pin=12, echo_pin=33)
 my_stepper = Stepper(19, 18, 5, 17)
 
-FULL_ROTATION = int(4075.7728395061727 / 8)
+FULL_ROTATION = Stepper.FULL_ROTATION
+
 
 # Callback function to handle messages
 def on_message(topic, msg):
@@ -25,6 +26,7 @@ def on_message(topic, msg):
     
     if my_dick["password"] == "jimmy4":
         iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
+        #iterations = rotation_steps
         factor = my_dick["angle"] if my_dick["mode"] == "angle" else int(FULL_ROTATION/360)
         data = ",".join([f"{(i)*factor}" for i in range(iterations)]) + ",shape\n"
         for _ in range(my_dick["runs"]):
