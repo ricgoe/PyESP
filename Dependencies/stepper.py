@@ -3,7 +3,7 @@ from machine import Pin
 
 # only test for uln2003
 class Stepper:
-    FULL_ROTATION = int(4075.7728395061727 / 8) # http://www.jangeox.be/2013/10/stepper-motor-28byj-48_25.html
+    FULL_ROTATION = 512 #int(4075.7728395061727 / 8) # http://www.jangeox.be/2013/10/stepper-motor-28byj-48_25.html
 
     HALF_STEP = [
     [0, 0, 0, 1],
