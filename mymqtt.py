@@ -29,7 +29,7 @@ def on_message(topic, msg):
     iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
     #iterations = rotation_steps
     factor = my_dick["angle"] if my_dick["mode"] == "angle" else int(FULL_ROTATION/360)
-    data = ",".join([f"{(i)*factor}" for i in range(iterations)]) + ",shape,position,sensor_rotation\n"
+    data = ",".join([f"{(i)*factor}" for i in range(iterations)]) + ",shape,position,sensor_rotation,angle\n"
     for _ in range(my_dick["runs"]):
         for i in range(iterations):
             my_stepper.angle(my_dick["angle"]) if my_dick['mode'] == 'angle' else my_stepper.step(my_dick["angle"])
@@ -38,8 +38,8 @@ def on_message(topic, msg):
             utime.sleep(0.005)
             data += str(dist) + ','
             utime.sleep(0.005)
-        data += my_dick["shape"] + ','+ str(my_dick["position"]) + ',' + str(my_dick["sensor_rotation"]) + '\n'
-        my_stepper.step(1) if my_dick['shape'] != 'cylinder' else None
+        data += my_dick["shape"] + ','+ str(my_dick["position"]) + ',' + str(my_dick["sensor_rotation"]) + ',' + str(my_dick["angle"]) + '\n'
+        my_stepper.angle(int(360/FULL_ROTATION)) if my_dick['shape'] != 'cylinder' else None
         utime.sleep(1)
     
     if my_dick["stop"]:
