@@ -38,7 +38,7 @@ def on_message(topic, msg):
             utime.sleep(0.005)
             data += str(dist) + ','
             utime.sleep(0.005)
-        data += my_dick["shape"] + ','+ my_dick["position"] + ',' + my_dick["sensor_rotation"] + '\n'
+        data += my_dick["shape"] + ','+ str(my_dick["position"]) + ',' + str(my_dick["sensor_rotation"]) + '\n'
         my_stepper.step(1) if my_dick['shape'] != 'cylinder' else None
         utime.sleep(1)
     
