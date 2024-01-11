@@ -24,21 +24,23 @@ def on_message(topic, msg):
     print("Topic: %s, Message: %s" % (topic, msg))
     my_dick = json.loads(msg)
     
-    if my_dick["password"] == "jimmy4":
-        iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
-        #iterations = rotation_steps
-        factor = my_dick["angle"] if my_dick["mode"] == "angle" else int(FULL_ROTATION/360)
-        data = ",".join([f"{(i)*factor}" for i in range(iterations)]) + ",shape\n"
-        for _ in range(my_dick["runs"]):
-            for i in range(iterations):
-                my_stepper.angle(my_dick["angle"])
-                utime.sleep(0.5)
-                dist = my_sensor.distance_mm()
-                utime.sleep(0.005)
-                data += str(dist) + ','
-                utime.sleep(0.005)
-            data += my_dick["shape"]+'\n'
-            utime.sleep(1)
+    if my_dick["password"] != "jimmy4":
+        return
+    iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
+    #iterations = rotation_steps
+    factor = my_dick["angle"] if my_dick["mode"] == "angle" else int(FULL_ROTATION/360)
+    data = ",".join([f"{(i)*factor}" for i in range(iterations)]) + ",shape,position,sensor_rotation\n"
+    for _ in range(my_dick["runs"]):
+        for i in range(iterations):
+            my_stepper.angle(my_dick["angle"]) if my_dick['mode'] == 'angle' else my_stepper.step(my_dick["angle"])
+            utime.sleep(0.05)
+            dist = my_sensor.distance_mm()
+            utime.sleep(0.005)
+            data += str(dist) + ','
+            utime.sleep(0.005)
+        data += my_dick["shape"] + ','+ my_dick["position"] + ',' + my_dick["sensor_rotation"] + '\n'
+        my_stepper.step(1) if my_dick['shape'] != 'cylinder' else None
+        utime.sleep(1)
     
     if my_dick["stop"]:
         should_stop_listening = True
