@@ -12,7 +12,7 @@ TOPIC = b"start"
 with open("continue", "r") as f:
     should_stop_listening = f.read() == "0"
 should_stop_listening = False # Debug
-my_sensor = Sensor(trigger_pin=12, echo_pin=33)
+my_sensor = Sensor(trigger_pin=32, echo_pin=33)
 my_stepper = Stepper(19, 18, 5, 17)
 
 FULL_ROTATION = Stepper.FULL_ROTATION
@@ -33,7 +33,7 @@ def on_message(topic, msg):
     for _ in range(my_dick["runs"]):
         for i in range(iterations):
             my_stepper.angle(my_dick["angle"]) if my_dick['mode'] == 'angle' else my_stepper.step(my_dick["angle"])
-            utime.sleep(0.05)
+            utime.sleep(0.5)
             dist = my_sensor.distance_mm()
             utime.sleep(0.005)
             data += str(dist) + ','
