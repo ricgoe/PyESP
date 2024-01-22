@@ -37,6 +37,10 @@ def listener():
 
 
 def on_message(client: mqtt.Client, userdata, msg):
+    if msg.payload.decode('utf-8') == "stop":
+        client.loop_stop()
+        client.disconnect()
+        return
     df = pd.read_csv(StringIO(msg.payload.decode('utf-8')))
     print(df)
     #df.to_csv("data_test_2.csv", index=False)
@@ -56,17 +60,16 @@ def on_message(client: mqtt.Client, userdata, msg):
     # ax.grid(True)
     # ax.legend(loc='upper right') # Legende
     # plt.show()
-    fig, ax = plt.subplots(figsize = (16, 8))
-    ax.plot(df.columns[:-4], df.iloc[0, :-4])
-    #ax.set_ylim(75, 200)
-    ax.set_xticks([x for x in range(0,len(df.columns), 8)])
-    plt.show()
-    client.loop_stop()
-    client.disconnect()
+    # fig, ax = plt.subplots(figsize = (16, 8))
+    # ax.plot(df.columns[:-4], df.iloc[0, :-4])
+    # #ax.set_ylim(75, 200)
+    # ax.set_xticks([x for x in range(0,len(df.columns), 8)])
+    # plt.show()
+    
 
 if __name__ == '__main__':
     # sensor_rotation = 1 -> sensor is rotated vertically, sensor_rotation = 0 -> sensor is rotated horizontally
-    sender(password="jimmy4", angle=11.25, stop=False, runs=1, shape="prisma", mode = "angle", position = 7, sensor_rotation = 0)
+    sender(password="jimmy4", angle=11.25, stop=False, runs=100, shape="prisma", mode = "angle", position = 7, sensor_rotation = 0)
     listener()
     
 
