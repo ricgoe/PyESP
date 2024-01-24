@@ -37,6 +37,8 @@ def on_message(topic, msg):
     print("Topic: %s, Message: %s" % (topic, msg))
     my_dick = json.loads(msg)
     
+    if my_dick['scan_mode'] == 'multi':
+        publish('multiscanner')
     if my_dick["password"] != "jimmy4":
         return
     iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
@@ -59,7 +61,8 @@ def on_message(topic, msg):
         should_stop_listening = True
         with open("continue", "w") as f:
             f.write("0")
-    if not data: publish(data)
+    if not data: 
+        publish(data)
     publish("stop")
     
 
