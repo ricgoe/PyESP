@@ -41,11 +41,16 @@ def on_message(client: mqtt.Client, userdata, msg):
         client.loop_stop()
         client.disconnect()
         return
+    
+    
     df = pd.read_csv(StringIO(msg.payload.decode('utf-8')))
     print(df)
     #df.to_csv("data_test_2.csv", index=False)
     output_filename=f'scans_angle_{str(df.iloc[-1,-1]).replace('.','_')}_pos_{str(df.iloc[-1,-3])}_rot_{str(df.iloc[-1,-2])}.csv'
-    output_path = os.path.join(os.getcwd(), 'Logs')
+    if msg.payload.decode('utf-8') == "multiscanner":
+        output_path = os.path.join(os.getcwd(), 'Logs_Multi')
+    else: 
+        output_path = os.path.join(os.getcwd(), 'Logs')
     output_filepath = os.path.join(output_path, output_filename)
     df.to_csv(output_filepath, mode='a', header=not os.path.exists(output_filepath), index=False)
     #df.to_csv('test.csv', index=False)
@@ -69,8 +74,7 @@ def on_message(client: mqtt.Client, userdata, msg):
 
 if __name__ == '__main__':
     # sensor_rotation = 1 -> sensor is rotated vertically, sensor_rotation = 0 -> sensor is rotated horizontally
-    sender(password="jimmy4", angle=11.25, stop=False, runs=400, shape="cylinder", mode = "angle", position = 6, sensor_rotation = 0)
+    sender(password="jimmy4", angle=11.25, stop=False, runs=50, shape="prisma", mode = "angle", position = 6, sensor_rotation = 0, scan_mode = 'multi')
     listener()
-    
 
     
