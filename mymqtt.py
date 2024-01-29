@@ -37,8 +37,8 @@ def on_message(topic, msg):
     print("Topic: %s, Message: %s" % (topic, msg))
     my_dick = json.loads(msg)
     
-    if my_dick['scan_mode'] == 'multi':
-        publish('multiscanner')
+    # if my_dick['scan_mode'] == 'multi':
+    #     publish('multiscanner')
     if my_dick["password"] != "jimmy4":
         return
     iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
