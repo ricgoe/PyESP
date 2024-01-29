@@ -37,8 +37,6 @@ def on_message(topic, msg):
     print("Topic: %s, Message: %s" % (topic, msg))
     my_dick = json.loads(msg)
     
-    if my_dick['scan_mode'] == 'multi':
-        publish('multiscanner')
     if my_dick["password"] != "jimmy4":
         return
     iterations = int(360/my_dick["angle"]) if my_dick["mode"]=="angle" else int(FULL_ROTATION/my_dick["angle"])
@@ -49,8 +47,11 @@ def on_message(topic, msg):
         for j in range(iterations):
             my_stepper.angle(my_dick["angle"]) if my_dick['mode'] == 'angle' else my_stepper.step(my_dick["angle"])
             utime.sleep(0.1)
-            dist = my_sensor.distance_mm()
-            data += str(dist) + ','
+            dist_list = []
+            for k in range(1+(int(my_dick["multi"])*2)):
+                dist_list.append(my_sensor.distance_mm())
+                utime.sleep(0.03)        
+            data += str(sum(dist_list)/len(dist_list)) + ','
         data += my_dick["shape"] + ','+ str(my_dick["position"]) + ',' + str(my_dick["sensor_rotation"]) + ',' + str(my_dick["angle"]) + '\n'
         my_stepper.angle(2.8125) if my_dick['shape'] != 'cylinder' else None
         if i%10 == 0 and i != 0: 
