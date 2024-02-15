@@ -56,16 +56,18 @@ root = os.getcwd()
 #log_path = os.path.join(root, 'Study')
 #file = os.path.join(log_path, f'{input("Shape: ")}_step_{input("Step size: ")}.csv')
 #file = os.path.join(log_path, f'Run_{input("Run: ")}_step_1.csv')
-df_data = pd.read_csv('data_bereinigt.csv')
+df_data = pd.read_csv('Logs/scans_angle_11_25_pos_7_rot_0.csv')
+df_mega = df_data[df_data['shape'] == 'cylinder']
 
-num_measurements = len(df_data.columns)-1
+
+num_measurements = len(df_mega.columns)-1
 measurements = np.zeros(num_measurements)
 kalman_outputs = np.zeros(num_measurements)
 
 
 
-for i in range(len(df_data.columns)-1):
-    measurement = df_data.iloc[0,i]
+for i in range(len(df_mega.columns)-1):
+    measurement = df_mega.iloc[0,i]
     result = dv_kalman(measurement)[0]
     measurements[i] = measurement
     kalman_outputs[i] = result
