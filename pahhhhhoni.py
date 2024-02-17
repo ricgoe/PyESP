@@ -72,7 +72,7 @@ def on_message(client: mqtt.Client, userdata, msg):
 
 if __name__ == '__main__':
     # sensor_rotation = 1 -> sensor is rotated vertically, sensor_rotation = 0 -> sensor is rotated horizontally
-    sender(password="jimmy4", angle=11.25, stop=False, runs=200, shape="prisma", mode = "angle", position = 4, sensor_rotation = 0, multi = False)
+    sender(password="jimmy4", angle=2.8125, stop=False, runs=300, shape="pentagon", mode = "angle", position = 7, sensor_rotation = 1, multi = False)
     listener()
 
     
