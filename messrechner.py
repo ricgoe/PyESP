@@ -1,4 +1,3 @@
-from email.mime import image
 import paho.mqtt.client as mqtt
 import json
 import matplotlib.pyplot as plt
@@ -9,9 +8,11 @@ import numpy as np
 from scipy.signal import medfilt
 from scipy.fft import rfft, irfft, rfftfreq
 from keras.models import load_model
+import tkinter as tk
+
 
 # Configuration
-broker = "192.168.178.152"
+broker = "10.42.0.1"
 port = 1883
 
 def sender(**kwargs):
@@ -88,7 +89,6 @@ def on_message(client: mqtt.Client, userdata, msg):
     print(predictions)
     predicted_class = np.argmax(predictions, axis=1)
     dict= {0: 'Cube', 1: 'Cylinder', 2: 'Pentagon'}
-    import tkinter as tk
     #tk window
     window = tk.Tk()
     window.title("Prediction")
