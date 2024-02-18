@@ -46,7 +46,7 @@ def on_message(topic, msg):
     for i in range(my_dick["runs"]):
         for j in range(iterations):
             my_stepper.angle(my_dick["angle"]) if my_dick['mode'] == 'angle' else my_stepper.step(my_dick["angle"])
-            utime.sleep(0.1)
+            utime.sleep(0.07)
             dist_list = []
             for k in range(1+(int(my_dick["multi"])*2)):
                 dist_list.append(my_sensor.distance_mm())

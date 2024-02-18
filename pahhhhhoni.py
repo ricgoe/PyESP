@@ -46,11 +46,11 @@ def on_message(client: mqtt.Client, userdata, msg):
     df = pd.read_csv(StringIO(msg.payload.decode('utf-8')))
     print(df)
     #df.to_csv("data_test_2.csv", index=False)
-    output_filename=f'scans_angle_{str(df.iloc[-1,-1]).replace('.','_')}_pos_{str(df.iloc[-1,-3])}_rot_{str(df.iloc[-1,-2])}.csv'
+    #output_filename=f'scans_angle_{str(df.iloc[-1,-1]).replace('.','_')}_pos_{str(df.iloc[-1,-3])}_rot_{str(df.iloc[-1,-2])}.csv'
     #output_path = os.path.join(os.getcwd(), 'Logs_Multi')
     output_path = os.path.join(os.getcwd(), 'Logs')
-    output_filepath = os.path.join(output_path, output_filename)
-    df.to_csv(output_filepath, mode='a', header=not os.path.exists(output_filepath), index=False)
+    #output_filepath = os.path.join(output_path, output_filename)
+    #df.to_csv(output_filepath, mode='a', header=not os.path.exists(output_filepath), index=False)
     #df.to_csv('test.csv', index=False)
     # fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
     #ax.plot(df.columns[:-1], df.iloc[0, :-1])
@@ -72,7 +72,7 @@ def on_message(client: mqtt.Client, userdata, msg):
 
 if __name__ == '__main__':
     # sensor_rotation = 1 -> sensor is rotated vertically, sensor_rotation = 0 -> sensor is rotated horizontally
-    sender(password="jimmy4", angle=2.8125, stop=False, runs=300, shape="pentagon", mode = "angle", position = 7, sensor_rotation = 1, multi = False)
+    sender(password="jimmy4", angle=2.8125, stop=False, runs=1, shape="pentagon", mode = "angle", position = 13, sensor_rotation = 1, multi = False)
     listener()
 
     
