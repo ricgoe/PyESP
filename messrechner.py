@@ -1,3 +1,4 @@
+from email.mime import image
 import paho.mqtt.client as mqtt
 import json
 import matplotlib.pyplot as plt
@@ -70,9 +71,6 @@ def on_message(client: mqtt.Client, userdata, msg):
         
     data_filtered_df.columns = df.columns
    
-
-    
-    
     data_filtered_df_diff = data_filtered_df.diff(axis=1)
     
     print(data_filtered_df_diff)
@@ -89,14 +87,17 @@ def on_message(client: mqtt.Client, userdata, msg):
 
     print(predictions)
     predicted_class = np.argmax(predictions, axis=1)
-    dict= {0: 'cube', 1: 'cylinder', 2: 'pentagon'}
+    dict= {0: 'Cube', 1: 'Cylinder', 2: 'Pentagon'}
     import tkinter as tk
     #tk window
     window = tk.Tk()
     window.title("Prediction")
     window.geometry("1200x800")
-    label = tk.Label(window, text=f"{dict[predicted_class[0]]}")
-    label.pack(fill="both", expand=True)
+    img = tk.PhotoImage(file=rf"assets\{dict[predicted_class[0]]}.png")
+    img_label = tk.Label(window, image=img)
+    img_label.pack(side="bottom",fill="x", expand=1)
+    label = tk.Label(window, text=f"{dict[predicted_class[0]]}", font=("Times New Roman", 120), fg="#0F3982")
+    label.pack(side="bottom", fill="x", expand=1)
     window.mainloop()
     print(predicted_class)
     
