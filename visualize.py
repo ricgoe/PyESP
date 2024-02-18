@@ -1,16 +1,18 @@
+from textwrap import fill
 import tkinter as tk
 import math
 import pandas as pd
 import time
 #read csv
-df = pd.read_csv(r'C:\Users\Jannis\Documents\PyESP\PyESP\Filtered_Data\scans_angle_2_8125_pos_6_rot_1_filtered.csv')
-
+#df = pd.read_csv(r'C:\Users\Jannis\Documents\PyESP\PyESP\Filtered_Data\scans_angle_2_8125_pos_6_rot_1_filtered.csv')
+df_1 = pd.read_csv(r'Filtered_Data\scans_angle_2_8125_pos_6_rot_1_filtered.csv')
+df = df_1[df_1['shape'] == 'pentagon']
 #tkinter window
 window = tk.Tk()
 window.title("my window")
 window.geometry('800x600')
 #tkinte canvas
-canvas = tk.Canvas(window, width=800, height=600)
+canvas = tk.Canvas(window, width=800, height=600, bg="green")
 canvas.pack()
 circle_size = 20
 times_executed = 0
@@ -44,9 +46,9 @@ def execute(row):
     #     print("circle at:",x,y,x+circle_size,y+circle_size)
     # print(20*"-")
     times_executed += 1
-    window.after(100, execute, row)
+    window.after(140, execute, row)
 
-execute(266)
+execute(2)
 
 
 window.mainloop()
