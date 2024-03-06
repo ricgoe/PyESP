@@ -93,7 +93,7 @@ def on_message(client: mqtt.Client, userdata, msg):
     window = tk.Tk()
     window.title("Prediction")
     window.geometry("1200x800")
-    img = tk.PhotoImage(file=rf"assets\{dict[predicted_class[0]]}.png")
+    img = tk.PhotoImage(file=rf"assets/{dict[predicted_class[0]]}.png")
     img_label = tk.Label(window, image=img)
     img_label.pack(side="bottom",fill="x", expand=1)
     label = tk.Label(window, text=f"{dict[predicted_class[0]]}", font=("Times New Roman", 120), fg="#0F3982")
